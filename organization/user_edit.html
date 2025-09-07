@@ -1,0 +1,126 @@
+{% extends 'base3.html' %}
+{% load static %}
+{% load utils_tags %}
+{% block head-extras %}
+	<title>Edit Organization User | {{ site_name }}</title>
+    <script>
+        const activeSidebar = 'organization_users';
+    </script>
+{% endblock %}
+{% block main-content %}
+	<div class="row align-items-center my-3">
+        <div class="col-md">
+            <h4 class="fw-700 fs-20 mb-md-0">Edit Organization User</h4>
+        </div>
+        <div class="col-md-auto">
+            <nav aria-label="breadcrumb" class="fs-14 mt-1 mt-md-0">
+                <ol class="breadcrumb p-0 mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="{% url2 'dashboard' 'logistics.clients_urls' %}" class="a-no-dec text-primary">
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{% url2 'organization_users' 'logistics.clients_urls' %}" class="a-no-dec text-primary">
+                            Organization Users
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ edit_user.full_name }}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4 col-md-5 mx-auto">
+            <div class="card custom1 mb-3">
+                <div class="card-body">
+                    <form method="post" action="{% url2 'organization_user_edit' 'logistics.clients_urls' edit_user.id_2 %}" class="custom-submit">
+                        {% csrf_token %}
+                        <ul class="form-errors text-danger fs-14 my-1" style="display: none" data-label="__all__">
+
+                        </ul>
+                        <div class="mb-3">
+                            <label for="full_name">
+                                Full name
+                            </label>
+                            <input type="text" class="form-control fs-14 my-1" id="full_name" required name="full_name" maxlength="200" value="{{ edit_user.full_name }}">
+                            <ul class="form-errors text-danger fs-14" style="display: none" data-label="full_name">
+
+                            </ul>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email">
+                                Email address (read-only)
+                            </label>
+                            <input type="email" class="form-control fs-14 my-1" id="email" readonly value="{{ edit_user.email }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone_number">
+                                Phone number (optional)
+                            </label>
+                            <input type="tel" class="form-control fs-14 my-1" id="phone_number" name="phone_number" maxlength="50" value="{{ edit_user.phone_number }}">
+                            <ul class="form-errors text-danger fs-14" style="display: none" data-label="phone_number">
+
+                            </ul>
+                        </div>
+                        {% if edit_user != request.user %}
+                        <div class="mb-3">
+                            <div class="row align-items-center g-0">
+                                <div class="col-auto">
+                                    <div class="form-check">
+                                        <input class="form-check-input custom" type="checkbox" id="is_org_admin" name="is_org_admin" {% if edit_user.is_org_admin %}checked{% endif %}>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <label for="is_org_admin" style="cursor: pointer" class="ms-1 fw-500">
+                                        Organization admin
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <button class="btn btn-primary custom btn-sm submit-btn" type="submit" data-working="Updating user...">
+                            Update User
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="card custom1 mb-3">
+                <div class="card-header pb-0" style="border-bottom: none">
+                    <h5 class="mb-0" style="font-size: 14px">Reset Password</h5>
+                </div>
+                <div class="card-body">
+                    <p class="fs-14">
+                        Reset the user's password. A new random password will be generated.
+                    </p>
+                    <form method="post" action="{% url2 'organization_user_reset_password' 'logistics.clients_urls' edit_user.id_2 %}" class="custom-submit">
+                        {% csrf_token %}
+                        <button class="btn btn-warning custom btn-sm submit-btn" type="submit" data-working="Resetting password...">
+                            Reset Password
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            {% if edit_user != request.user %}
+            <div class="card custom1 mb-3">
+                <div class="card-header pb-0" style="border-bottom: none">
+                    <h5 class="mb-0" style="font-size: 14px">Remove User</h5>
+                </div>
+                <div class="card-body">
+                    <p class="fs-14">
+                        Remove this user from the organization. This action cannot be undone.
+                    </p>
+                    <form method="post" action="{% url2 'organization_user_remove' 'logistics.clients_urls' edit_user.id_2 %}" class="custom-submit">
+                        {% csrf_token %}
+                        <button class="btn btn-danger custom btn-sm submit-btn" type="submit" data-working="Removing user...">
+                            Remove User
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

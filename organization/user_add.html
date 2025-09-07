@@ -1,0 +1,91 @@
+{% extends 'base3.html' %}
+{% load static %}
+{% load utils_tags %}
+{% block head-extras %}
+	<title>Add Organization User | {{ site_name }}</title>
+    <script>
+        const activeSidebar = 'organization_users';
+    </script>
+{% endblock %}
+{% block main-content %}
+	<div class="row align-items-center my-3">
+        <div class="col-md">
+            <h4 class="fw-700 fs-20 mb-md-0">Add Organization User</h4>
+        </div>
+        <div class="col-md-auto">
+            <nav aria-label="breadcrumb" class="fs-14 mt-1 mt-md-0">
+                <ol class="breadcrumb p-0 mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="{% url2 'dashboard' 'logistics.clients_urls' %}" class="a-no-dec text-primary">
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{% url2 'organization_users' 'logistics.clients_urls' %}" class="a-no-dec text-primary">
+                            Organization Users
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Add User</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4 col-md-5 mx-auto">
+            <div class="card custom1 mb-3">
+                <div class="card-body">
+                    <form method="post" action="{% url2 'organization_user_add' 'logistics.clients_urls' %}" class="custom-submit">
+                        {% csrf_token %}
+                        <ul class="form-errors text-danger fs-14 my-1" style="display: none" data-label="__all__">
+
+                        </ul>
+                        <div class="mb-3">
+                            <label for="full_name">
+                                Full name
+                            </label>
+                            <input type="text" class="form-control fs-14 my-1" id="full_name" required name="full_name" maxlength="200">
+                            <ul class="form-errors text-danger fs-14" style="display: none" data-label="full_name">
+
+                            </ul>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email">
+                                Email address
+                            </label>
+                            <input type="email" class="form-control fs-14 my-1" id="email" required name="email" maxlength="255">
+                            <ul class="form-errors text-danger fs-14" style="display: none" data-label="email">
+
+                            </ul>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone_number">
+                                Phone number (optional)
+                            </label>
+                            <input type="tel" class="form-control fs-14 my-1" id="phone_number" name="phone_number" maxlength="50">
+                            <ul class="form-errors text-danger fs-14" style="display: none" data-label="phone_number">
+
+                            </ul>
+                        </div>
+                        <div class="mb-3">
+                            <div class="row align-items-center g-0">
+                                <div class="col-auto">
+                                    <div class="form-check">
+                                        <input class="form-check-input custom" type="checkbox" id="is_org_admin" name="is_org_admin">
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <label for="is_org_admin" style="cursor: pointer" class="ms-1 fw-500">
+                                        Make organization admin
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary custom btn-sm submit-btn" type="submit" data-working="Adding user...">
+                            Add User
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
